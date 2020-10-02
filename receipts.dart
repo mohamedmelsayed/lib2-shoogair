@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 TextEditingController customcontroller = new TextEditingController();
 
 createPrintDialog(BuildContext context, Map<String, dynamic> d) {
- records=[];
+  records = [];
   d.forEach((k, v) => assigndata2(k, v));
   return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("print recipt"),
+          title: Text(
+            "Payment Info",
+            textAlign: TextAlign.center,
+          ),
           content: Builder(
             builder: (context) {
               // Get available height and width of the build area of this widget. Make a choice depending on the size.
@@ -78,51 +81,19 @@ class Record {
     this.value = value;
   }
 }
-
 assigndata2(k, v) {
-  switch (k) {
-    case 'TransitionType':
+  if (k != "PAN") {
+    if (v.toString().contains("<br/>")) {
+      String value = v.toString().substring(0, v.toString().indexOf(("<br/>")));
+      records.add(new Record(k, value));
+    } else {
       records.add(new Record(k, v));
-      break;
-    case 'PAN':
-      records.add(new Record(k, v));
-
-      break;
-    case 'amount':
-      records.add(new Record(k, v));
-
-      break;
-    case 'card':
-      records.add(new Record(k, v));
-
-      break;
-    case 'phone':
-      records.add(new Record(k, v));
-
-      break;
-    case 'fees':
-      records.add(new Record(k, v));
-
-      break;
-    case 'currency':
-      records.add(new Record(k, v));
-
-      break;
-    case 'transTime':
-      records.add(new Record(k, v));
-
-      break;
-    case 'meter':
-      records.add(new Record(k, v));
-
-      break;
-    case 'balance':
-      records.add(new Record(k, v));
-
-      break;
-    case 'result':
-      records.add(new Record(k, v));
-
-      break;
+    }
+  } else {
+    String value = v.toString();
+    String pan = value
+        .substring((value.indexOf("-") + 1), value.length)
+        .replaceRange(5, 13, "XXXX");
+    records.add(new Record(k, pan));
   }
 }
