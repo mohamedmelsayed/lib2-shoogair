@@ -14,6 +14,7 @@ createPrintDialog(BuildContext context, Map<String, dynamic> d) {
             "Payment Info",
             textAlign: TextAlign.center,
           ),
+          backgroundColor: Colors.white,
           content: Builder(
             builder: (context) {
               // Get available height and width of the build area of this widget. Make a choice depending on the size.
@@ -22,10 +23,8 @@ createPrintDialog(BuildContext context, Map<String, dynamic> d) {
 
               return Container(
                 child: Table(
-
-                    // textDirection: TextDirection.rtl,
+                    textDirection: TextDirection.ltr,
                     // defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
-                    // border:TableBorder.all(width: 2.0,color: Colors.red),
                     children: createRows()),
                 height: height - 4,
                 width: width - 4,
@@ -81,19 +80,44 @@ class Record {
     this.value = value;
   }
 }
+
 assigndata2(k, v) {
   if (k != "PAN") {
-    if (v.toString().contains("<br/>")) {
-      String value = v.toString().substring(0, v.toString().indexOf(("<br/>")));
-      records.add(new Record(k, value));
+    if (k == "MeterNo") {
+      caseMeterNo(k, v);
     } else {
-      records.add(new Record(k, v));
+      otherwise(k, v);
     }
   } else {
-    String value = v.toString();
-    String pan = value
-        .substring((value.indexOf("-") + 1), value.length)
-        .replaceRange(5, 13, "XXXX");
-    records.add(new Record(k, pan));
+    casePanNo(k, v);
+  }
+}
+
+caseMeterNo(k, v) {
+  String value = v.toString();
+  print(value);
+  value.replaceAll("\"", "");
+  for (var i = 1; i < value.length; i++) {
+    if (i % 5 == 0) {
+      value = value.substring(0, i) + "-" + value.substring(i, value.length);
+    }
+  }
+  records.add(new Record(k, value));
+}
+
+casePanNo(k, v) {
+  String value = v.toString();
+  String pan = value
+      .substring((value.indexOf("-") + 1), value.length)
+      .replaceRange(5, 13, "XXXX");
+  records.add(new Record(k, pan));
+}
+
+otherwise(k, v) {
+  if (v.toString().contains("<br/>")) {
+    String value = v.toString().substring(0, v.toString().indexOf(("<br/>")));
+    records.add(new Record(k, value));
+  } else {
+    records.add(new Record(k, v));
   }
 }
