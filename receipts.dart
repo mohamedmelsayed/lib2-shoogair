@@ -1,19 +1,32 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:screenshot/screenshot.dart';
+
+File _imageFile;
+
+//Create an instance of ScreenshotController
+ScreenshotController screenshotController = ScreenshotController();
 
 TextEditingController customcontroller = new TextEditingController();
+String text = '';
+String subject = '';
+List<String> imagePaths = [];
 
 createPrintDialog(BuildContext context, Map<String, dynamic> d) {
   records = [];
+  screenshotController.capture(
+    pixelRatio: 1.5
+  );
   d.forEach((k, v) => assigndata2(k, v));
   return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            "Payment Info",
-            textAlign: TextAlign.center,
-          ),
           backgroundColor: Colors.white,
           content: Builder(
             builder: (context) {
@@ -22,19 +35,60 @@ createPrintDialog(BuildContext context, Map<String, dynamic> d) {
               var width = MediaQuery.of(context).size.width;
 
               return Container(
-                child: Table(
-                    textDirection: TextDirection.ltr,
-                    // defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
-                    children: createRows()),
-                height: height - 4,
-                width: width - 4,
+                child: Screenshot(
+                  controller: screenshotController,
+                  
+                  child:new Container (
+                    color : Colors.white,
+                    child: new Column(
+                    children: [
+                      Row(),
+                      Text(
+                        "Payment Info",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.orange[900]),
+                      ),
+                      Image(
+                        image: AssetImage('assets/images/done.png'),
+                      ),
+                      returnTabularInfo()
+                    ],
+                  ),
+                  )  
+                ),
+                height: height,
+                width: width,
               );
             },
           ),
           actions: <Widget>[
             MaterialButton(
-              child: Text("submit"),
-              onPressed: () {},
+              child: Text("Close"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            MaterialButton(
+              child: Text("Share"),
+              onPressed: () {
+                _imageFile = null;
+                screenshotController
+                    .capture(delay: Duration(milliseconds: 10))
+                    .then((File image) async {
+                  //print("Capture Done");
+
+                  final result = await ImageGallerySaver.saveImage(
+                      image.readAsBytesSync());
+                  print("File Saved to Gallery");
+                  Uint8List bytes1 = image.readAsBytesSync();
+                  ByteData bytes = ByteData.view(bytes1.buffer);
+                  await Share.file('esys image', 'esys.png',
+                      bytes.buffer.asUint8List(), 'image/png',
+                      text: 'ShoogairCash Payment Info');
+                }).catchError((onError) {
+                  print(onError);
+                });
+              },
             )
           ],
           shape: RoundedRectangleBorder(
@@ -49,8 +103,13 @@ createRows() {
   tableRows = [];
   for (Record item in records) {
     tableRows.add(new TableRow(children: [
-      Text(item.key.toString(), textScaleFactor: 0.8),
-      Text(item.value.toString(), textScaleFactor: 0.8),
+      Text(
+        item.key.toString(),
+        textScaleFactor: 0.8,
+        style: TextStyle(color: Colors.orange[900]),
+      ),
+      Text(item.value.toString(),
+          textScaleFactor: 0.8, style: TextStyle(color: Colors.orange[900])),
     ]));
   }
   return tableRows;
@@ -120,4 +179,11 @@ otherwise(k, v) {
   } else {
     records.add(new Record(k, v));
   }
+}
+
+Table returnTabularInfo() {
+  return Table(
+      textDirection: TextDirection.ltr,
+      // defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
+      children: createRows());
 }
