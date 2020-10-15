@@ -20,46 +20,38 @@ List<String> imagePaths = [];
 createPrintDialog(BuildContext context, Map<String, dynamic> d) {
   records = [];
   screenshotController.capture(
-    pixelRatio: 1.5
-  );
+      pixelRatio: 1, delay: Duration(milliseconds: 10));
   d.forEach((k, v) => assigndata2(k, v));
   return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          content: Builder(
-            builder: (context) {
-              // Get available height and width of the build area of this widget. Make a choice depending on the size.
-              var height = MediaQuery.of(context).size.height;
-              var width = MediaQuery.of(context).size.width;
-
-              return Container(
-                child: Screenshot(
+          content: Padding(
+            padding: const EdgeInsets.only(top: 55),
+            child: Container(
+                child: new Container(
+              child: Screenshot(
                   controller: screenshotController,
-                  
-                  child:new Container (
-                    color : Colors.white,
+                  child: Center(
+                      child: new Container(
+                    color: Colors.white,
                     child: new Column(
-                    children: [
-                      Row(),
-                      Text(
-                        "Payment Info",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.orange[900]),
-                      ),
-                      Image(
-                        image: AssetImage('assets/images/done.png'),
-                      ),
-                      returnTabularInfo()
-                    ],
-                  ),
-                  )  
-                ),
-                height: height,
-                width: width,
-              );
-            },
+                      children: [
+                        Image(
+                          image: AssetImage('assets/images/done90.png'),
+                        ),
+                        Text(
+                          "Success",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black, fontSize: 24),
+                        ),
+                        returnTabularInfo()
+                      ],
+                    ),
+                  ))),
+            )),
           ),
           actions: <Widget>[
             MaterialButton(
@@ -102,15 +94,24 @@ List<TableRow> tableRows = new List<TableRow>();
 createRows() {
   tableRows = [];
   for (Record item in records) {
-    tableRows.add(new TableRow(children: [
-      Text(
-        item.key.toString(),
-        textScaleFactor: 0.8,
-        style: TextStyle(color: Colors.orange[900]),
-      ),
-      Text(item.value.toString(),
-          textScaleFactor: 0.8, style: TextStyle(color: Colors.orange[900])),
-    ]));
+    tableRows.add(new TableRow(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            shape: BoxShape.rectangle,
+            border: Border.all(
+              color: Colors.orange[400],
+              width: 1.5,
+            )),
+        children: [
+          Text(
+            item.key.toString(),
+            textScaleFactor: 0.6,
+            style: TextStyle(color: Colors.black, fontSize: 20),
+          ),
+          Text(item.value.toString(),
+              textScaleFactor: 0.6,
+              style: TextStyle(color: Colors.black, fontSize: 20)),
+        ]));
   }
   return tableRows;
 }
