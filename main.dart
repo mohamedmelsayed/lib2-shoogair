@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
+import 'StatelessReceipt.dart';
+
 Future main() async {
   runApp(new MyApp());
 }
@@ -57,7 +59,6 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
           child: InAppWebView(
             initialFile: 'assets/en/login.html',
             initialHeaders: {},
-          
             initialOptions: InAppWebViewGroupOptions(
               crossPlatform: InAppWebViewOptions(
                 javaScriptEnabled: true,
@@ -67,22 +68,26 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
             onWebViewCreated: (InAppWebViewController controller) {
               webView = controller;
               controller.addJavaScriptHandler(
-                
                   handlerName: "qrcode",
                   callback: (args) {
-                     return scanQR(context,"gfhdhfhggdf");
+                    return scanQR(context, "gfhdhfhggdf");
                     //  return "done";
                   });
-                   controller.addJavaScriptHandler(
+              controller.addJavaScriptHandler(
                   handlerName: "showQR",
                   callback: (args) {
-                     generateBarCode(context,"jkkkkkkkkk");
-                     return "done";
+                    generateBarCode(context, "jkkkkkkkkk");
+                    return "done";
                   });
               controller.addJavaScriptHandler(
                   handlerName: "print",
                   callback: (args) {
-                    return createPrintDialog(context, args[0]);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FirstRoute(args[0])),
+                    );
+                    // return createPrintDialog(context, args[0]);
                   });
             },
             onLoadStart: (InAppWebViewController controller, String url) {},

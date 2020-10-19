@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:screenshot/screenshot.dart';
 
+import 'classes.dart';
+
 File _imageFile;
 
 //Create an instance of ScreenshotController
@@ -44,8 +46,7 @@ createPrintDialog(BuildContext context, Map<String, dynamic> d) {
                         Text(
                           "Success",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.black, fontSize: 24),
+                          style: TextStyle(color: Colors.black, fontSize: 24),
                         ),
                         returnTabularInfo()
                       ],
@@ -114,31 +115,6 @@ createRows() {
         ]));
   }
   return tableRows;
-}
-
-class Record {
-  String key;
-  String value;
-
-  Record(String k, String v) {
-    this.key = k;
-    this.value = v;
-  }
-  String get get_key {
-    return key;
-  }
-
-  String get get_value {
-    return value;
-  }
-
-  void set setKey(String key) {
-    this.key = key;
-  }
-
-  void set setValue(String value) {
-    this.value = value;
-  }
 }
 
 assigndata2(k, v) {
