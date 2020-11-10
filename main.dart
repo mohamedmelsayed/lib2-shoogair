@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ShoogairFlutt/pincode.dart';
 import 'package:ShoogairFlutt/qrscanner.dart';
 import 'package:ShoogairFlutt/showQR.dart';
 import 'package:ShoogairFlutt/receipts.dart';
@@ -87,6 +88,16 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                       MaterialPageRoute(
                           builder: (context) => FirstRoute(args[0])),
                     );
+                    // return createPrintDialog(context, args[0]);
+                  });
+              controller.addJavaScriptHandler(
+                  handlerName: "setpin",
+                  callback: (args) {
+                    final result =  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreatePinCode()),
+                    );
+                   return  result;
                     // return createPrintDialog(context, args[0]);
                   });
             },
