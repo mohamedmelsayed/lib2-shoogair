@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class CreatePinCode extends StatelessWidget {
+class Login extends StatelessWidget {
   final usernameC = TextEditingController();
   final passwordC = TextEditingController();
-  final pin1C = TextEditingController();
-  final pin2C = TextEditingController();
-  get prefs async => await SharedPreferences.getInstance();
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -34,7 +31,7 @@ class CreatePinCode extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'Crate Your PIN Code',
+                      'Login',
                       style: TextStyle(
                           fontSize: 25.0, fontWeight: FontWeight.bold),
                     ),
@@ -71,31 +68,6 @@ class CreatePinCode extends StatelessWidget {
               SizedBox(
                 height: 10.0,
               ),
-              TextField(
-                obscureText: true,
-                controller: pin1C,
-                decoration: InputDecoration(
-                  hintText: 'PinCode',
-                  suffixIcon: Icon(Icons.visibility_off),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              TextField(
-                obscureText: true,
-                controller: pin2C,
-                decoration: InputDecoration(
-                  hintText: 'Re-Type PinCode',
-                  suffixIcon: Icon(Icons.visibility_off),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
               SizedBox(
                 height: 30.0,
               ),
@@ -112,8 +84,8 @@ class CreatePinCode extends StatelessWidget {
                       child: Text('Login'),
                       color: Color(0xffEE7B23),
                       onPressed: () {
-                        if (pin1C.text == pin2C.text) {
-                          prefs.setString('pincode', pin2C.text);
+                        if (passwordC.text != null) {
+                          // Navigator.pop(context, pin2C.text);
                         }
                       },
                     ),

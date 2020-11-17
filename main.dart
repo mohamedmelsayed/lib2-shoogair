@@ -5,7 +5,7 @@ import 'package:ShoogairFlutt/qrscanner.dart';
 import 'package:ShoogairFlutt/showQR.dart';
 import 'package:ShoogairFlutt/receipts.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'StatelessReceipt.dart';
@@ -44,6 +44,8 @@ class InAppWebViewPage extends StatefulWidget {
 
 class _InAppWebViewPageState extends State<InAppWebViewPage> {
   InAppWebViewController webView;
+
+  get prefs async => await SharedPreferences.getInstance();
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +95,18 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
               controller.addJavaScriptHandler(
                   handlerName: "setpin",
                   callback: (args) {
-                    final result =  Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => CreatePinCode()),
                     );
-                   return  result;
+
+                    // return createPrintDialog(context, args[0]);
+                  });
+              controller.addJavaScriptHandler(
+                  handlerName: "getpin",
+                  callback: (args) {
+                    return prefs.getString('pincode') ?? '';
+
                     // return createPrintDialog(context, args[0]);
                   });
             },
