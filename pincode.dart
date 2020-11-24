@@ -7,7 +7,24 @@ class CreatePinCode extends StatelessWidget {
   final passwordC = TextEditingController();
   final pin1C = TextEditingController();
   final pin2C = TextEditingController();
-  get prefs async => await SharedPreferences.getInstance();
+  CreatePinCode(){
+    
+  }
+  Future<String> getPicode() async {
+    final prefs = await SharedPreferences.getInstance();
+    final result = prefs.getString("pincode");
+    if (result == null) {
+      return '';
+    } else {
+      return result;
+    }
+  }
+
+  Future<void> setPincode(String pin) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('pincode', pin);
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -113,7 +130,7 @@ class CreatePinCode extends StatelessWidget {
                       color: Color(0xffEE7B23),
                       onPressed: () {
                         if (pin1C.text == pin2C.text) {
-                          prefs.setString('pincode', pin2C.text);
+                          setPincode(pin2C.text);
                         }
                       },
                     ),

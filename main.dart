@@ -20,6 +20,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  
   @override
   void initState() {
     super.initState();
@@ -44,8 +45,15 @@ class InAppWebViewPage extends StatefulWidget {
 
 class _InAppWebViewPageState extends State<InAppWebViewPage> {
   InAppWebViewController webView;
-
-  get prefs async => await SharedPreferences.getInstance();
+  Future<String> getPicode() async {
+    final prefs = await SharedPreferences.getInstance();
+    final result = prefs.getString("pincode");
+    if (result == null) {
+      return '';
+    } else {
+      return result;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,14 +108,12 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                       MaterialPageRoute(builder: (context) => CreatePinCode()),
                     );
 
-                    // return createPrintDialog(context, args[0]);
                   });
               controller.addJavaScriptHandler(
                   handlerName: "getpin",
                   callback: (args) {
-                    return prefs.getString('pincode') ?? '';
+                    return getPicode();
 
-                    // return createPrintDialog(context, args[0]);
                   });
             },
             onLoadStart: (InAppWebViewController controller, String url) {},
