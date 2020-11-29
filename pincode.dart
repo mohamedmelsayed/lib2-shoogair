@@ -8,7 +8,7 @@ class CreatePinCode extends StatelessWidget {
   final pin1C = TextEditingController();
   final pin2C = TextEditingController();
   CreatePinCode(){
-    
+
   }
   Future<String> getPicode() async {
     final prefs = await SharedPreferences.getInstance();
@@ -61,33 +61,33 @@ class CreatePinCode extends StatelessWidget {
               SizedBox(
                 height: 15.0,
               ),
-              TextField(
-                controller: usernameC,
-                decoration: InputDecoration(
-                  hintText: 'Username',
-                  suffixIcon: Icon(Icons.supervised_user_circle),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              TextField(
-                obscureText: true,
-                controller: passwordC,
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  suffixIcon: Icon(Icons.visibility_off),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
+              // TextField(
+              //   controller: usernameC,
+              //   decoration: InputDecoration(
+              //     hintText: 'Username',
+              //     suffixIcon: Icon(Icons.supervised_user_circle),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(20.0),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 10.0,
+              // ),
+              // TextField(
+              //   obscureText: true,
+              //   controller: passwordC,
+              //   decoration: InputDecoration(
+              //     hintText: 'Password',
+              //     suffixIcon: Icon(Icons.visibility_off),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(20.0),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 10.0,
+              // ),
               TextField(
                 obscureText: true,
                 controller: pin1C,
@@ -131,6 +131,7 @@ class CreatePinCode extends StatelessWidget {
                       onPressed: () {
                         if (pin1C.text == pin2C.text) {
                           setPincode(pin2C.text);
+                            Navigator.pop(context, 'Yep!');
                         }
                       },
                     ),
