@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ShoogairFlutt/pincode.dart';
+import 'package:ShoogairFlutt/pincodeLogin.dart';
 import 'package:ShoogairFlutt/qrscanner.dart';
 import 'package:ShoogairFlutt/showQR.dart';
 import 'package:ShoogairFlutt/receipts.dart';
@@ -113,6 +114,15 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                   handlerName: "getpin",
                   callback: (args) {
                     return getPicode();
+
+                  });
+                   controller.addJavaScriptHandler(
+                  handlerName: "pinlogin",
+                  callback: (args) {
+                     Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PinLogin()),
+                    );
 
                   });
             },
