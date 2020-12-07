@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'StatelessReceipt.dart';
+import 'loginFast.dart';
 
 Future main() async {
   runApp(new MyApp());
@@ -21,7 +22,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
   @override
   void initState() {
     super.initState();
@@ -108,22 +108,16 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                       context,
                       MaterialPageRoute(builder: (context) => CreatePinCode()),
                     );
-
                   });
               controller.addJavaScriptHandler(
                   handlerName: "getpin",
                   callback: (args) {
                     return getPicode();
-
                   });
-                   controller.addJavaScriptHandler(
+              controller.addJavaScriptHandler(
                   handlerName: "pinlogin",
                   callback: (args) {
-                     Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PinLogin()),
-                    );
-
+                    return doLogin(context);
                   });
             },
             onLoadStart: (InAppWebViewController controller, String url) {},
