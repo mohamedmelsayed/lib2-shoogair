@@ -5,23 +5,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 final pin2C = TextEditingController();
 
 String result = 'false';
-Future<String> doLogin(BuildContext context) async {
-  _doLogin(context);
-  return result;
-}
 
-Future<String> getPicode() async {
+
+ Future<String> comparePin(String pin) async {
   final prefs = await SharedPreferences.getInstance();
   final result = prefs.getString("pincode");
   if (result == null) {
-    return '';
+    return 'false';
   } else {
-    return result;
+    if(result==pin){
+      return 'true';
+    }
+    else{
+    return 'false';
+
+    } 
   }
+                                   
+
 }
 
-_doLogin(BuildContext context) {
-  return showDialog(
+Future doLogin(BuildContext context) {
+  
+
+return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -74,13 +81,13 @@ _doLogin(BuildContext context) {
                                 child: Text('Login'),
                                 color: Color(0xffEE7B23),
                                 onPressed: () {
-                                  if (getPicode() == pin2C.text) {
-                                    result = 'true';
-                                  }
+                                     var r=  comparePin(pin2C.text);
+                                     Navigator.of(context).pop( r);
                                 },
                               ),
                             ],
                           ))
                     ])))));
       });
+
 }
