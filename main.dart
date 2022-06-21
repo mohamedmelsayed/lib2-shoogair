@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:ShoogairFlutt/qrscanner.dart';
-import 'package:ShoogairFlutt/showQR.dart';
-import 'package:ShoogairFlutt/receipts.dart';
+import 'package:ShoogairCash/qrscanner.dart';
+import 'package:ShoogairCash/showQR.dart';
+import 'package:ShoogairCash/receipts.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -88,6 +88,16 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                           builder: (context) => FirstRoute(args[0])),
                     );
                     // return createPrintDialog(context, args[0]);
+                  });
+              controller.addJavaScriptHandler(
+                  handlerName: "setLoginTime",
+                  callback: (args) {
+                    return createPrintDialog(context, args[0]);
+                  });
+              controller.addJavaScriptHandler(
+                  handlerName: "checkSessionStatus",
+                  callback: (args) {
+                    return createPrintDialog(context, args[0]);
                   });
             },
             onLoadStart: (InAppWebViewController controller, String url) {},
