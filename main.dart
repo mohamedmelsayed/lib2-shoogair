@@ -3,11 +3,16 @@ import 'dart:async';
 import 'package:ShoogairCash/qrscanner.dart';
 import 'package:ShoogairCash/showQR.dart';
 import 'package:ShoogairCash/receipts.dart';
+import 'package:ShoogairFlutt/pincode.dart';
+import 'package:ShoogairFlutt/pincodeLogin.dart';
+import 'package:ShoogairFlutt/qrscanner.dart';
+import 'package:ShoogairFlutt/showQR.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'StatelessReceipt.dart';
+import 'loginFast.dart';
 
 Future main() async {
   runApp(new MyApp());
@@ -43,6 +48,15 @@ class InAppWebViewPage extends StatefulWidget {
 
 class _InAppWebViewPageState extends State<InAppWebViewPage> {
   InAppWebViewController webView;
+  Future<String> getPicode() async {
+    final prefs = await SharedPreferences.getInstance();
+    final result = prefs.getString("pincode");
+    if (result == null) {
+      return '';
+    } else {
+      return result;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +112,22 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                   handlerName: "checkSessionStatus",
                   callback: (args) {
                     return createPrintDialog(context, args[0]);
+                  handlerName: "setpin",
+                  callback: (args) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreatePinCode()),
+                    );
+                  });
+              controller.addJavaScriptHandler(
+                  handlerName: "getpin",
+                  callback: (args) {
+                    return getPicode();
+                  });
+              controller.addJavaScriptHandler(
+                  handlerName: "pinlogin",
+                  callback: (args) {
+                    return doLogin(context);
                   });
             },
             onLoadStart: (InAppWebViewController controller, String url) {},
